@@ -1,0 +1,38 @@
+
+[2026-03-08T21:02:18.101Z]
+NoSuchBucket: The specified bucket does not exist.
+    at Request.extractError (/opt/taxstick/app-backend/node_modules/aws-sdk/lib/services/s3.js:757:35)
+    at Request.callListeners (/opt/taxstick/app-backend/node_modules/aws-sdk/lib/sequential_executor.js:106:20)
+    at Request.emit (/opt/taxstick/app-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/opt/taxstick/app-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/opt/taxstick/app-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/opt/taxstick/app-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /opt/taxstick/app-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/opt/taxstick/app-backend/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/opt/taxstick/app-backend/node_modules/aws-sdk/lib/request.js:688:12)
+    at Request.callListeners (/opt/taxstick/app-backend/node_modules/aws-sdk/lib/sequential_executor.js:116:18)
+
+[2026-03-08T21:06:04.283Z]
+NoSuchBucket: The specified bucket does not exist.
+    at Request.extractError (/opt/taxstick/app-backend/node_modules/aws-sdk/lib/services/s3.js:757:35)
+    at Request.callListeners (/opt/taxstick/app-backend/node_modules/aws-sdk/lib/sequential_executor.js:106:20)
+    at Request.emit (/opt/taxstick/app-backend/node_modules/aws-sdk/lib/sequential_executor.js:78:10)
+    at Request.emit (/opt/taxstick/app-backend/node_modules/aws-sdk/lib/request.js:686:14)
+    at Request.transition (/opt/taxstick/app-backend/node_modules/aws-sdk/lib/request.js:22:10)
+    at AcceptorStateMachine.runTo (/opt/taxstick/app-backend/node_modules/aws-sdk/lib/state_machine.js:14:12)
+    at /opt/taxstick/app-backend/node_modules/aws-sdk/lib/state_machine.js:26:10
+    at Request.<anonymous> (/opt/taxstick/app-backend/node_modules/aws-sdk/lib/request.js:38:9)
+    at Request.<anonymous> (/opt/taxstick/app-backend/node_modules/aws-sdk/lib/request.js:688:12)
+    at Request.callListeners (/opt/taxstick/app-backend/node_modules/aws-sdk/lib/sequential_executor.js:116:18)
+
+[2026-03-10T15:04:47.930Z]
+MESSAGE: Cannot read properties of undefined (reading 'Location')
+STACK: TypeError: Cannot read properties of undefined (reading 'Location')
+    at exports.uploadFiles (/opt/taxstick/app-backend/controllers/files.js:14:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
+
+[2026-03-13T21:41:18.859Z]
+MESSAGE: Cannot read properties of undefined (reading 'Location')
+STACK: TypeError: Cannot read properties of undefined (reading 'Location')
+    at exports.uploadFiles (/opt/taxstick/app-backend/controllers/files.js:14:29)
+    at process.processTicksAndRejections (node:internal/process/task_queues:95:5)
