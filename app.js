@@ -12,19 +12,58 @@ const app = express();
 
 // middleware
 dotenv.config();
-app.use(function (req, res, next) {
-    res.header(
+app.use((req, res, next) => {
+  const allowedOrigins = [
+    "https://tax.eduardoservices4u.com",
+    "http://localhost:3000",
+  ];
+
+  const origin = req.headers.origin;
+
+  if (allowedOrigins.includes(origin)) {
+    res.header("Access-Control-Allow-Origin", origin);
+  }
+
+  res.header("Vary", "Origin");
+  res.header("Access-Control-Allow-Credentials", "true");
+  res.header(
     "Access-Control-Allow-Headers",
     "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-)
-    res.header("Access-Control-Allow-Methods", "GET, POST, PUT, DELETE, OPTIONS")
-    next()
+  );
+  res.header(
+    "Access-Control-Allow-Methods",
+    "GET, POST, PUT, DELETE, OPTIONS"
+  );
+
+  if (req.method === "OPTIONS") {
+    return res.sendStatus(200);
+  }
+
+  next();
 });
 
 app.use(cors({
-  origin: "*",
+  origin: [
+    "https://tax.eduardoservices4u.com",
+    "http://localhost:3000",
+  ],
+  credentials: true,
   methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "Authorization"],
+  allowedHeaders: [
+    "Origin",
+    "X-Requested-With",
+    "Content-Type",
+    "Accept",
+    "Authorization",
+  ],
+}));
+
+app.options("*", cors({
+  origin: [
+    "https://tax.eduardoservices4u.com",
+    "http://localhost:3000"
+  ],
+  credentials: true
 }));
 app.use(compression())
 app.use(express.json({ verify: (req, res, buf) => { req.rawBody = buf; } }));
@@ -119,6 +158,7 @@ app.set('io', io);
     const pageRoutes = require("./routers/page");
 const tawkWebhookRoutes = require('./src/routes/tawkWebhook.routes');
 const tawkOutboundRoutes = require('./src/routes/tawkOutbound.routes');
+const conversationalHubRoutes = require('./src/routes/conversationalHub.routes');
 
     // morgan routes view
     if (app.get("env") === "development") {
@@ -170,6 +210,7 @@ const tawkOutboundRoutes = require('./src/routes/tawkOutbound.routes');
     app.use('/api/page', pageRoutes);
 app.use('/', tawkWebhookRoutes);
 app.use('/', tawkOutboundRoutes);
+app.use('/api/conversational-hub', conversationalHubRoutes);
 
     // server welcome response
     app.get('/', (req, res, next) => {

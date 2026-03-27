@@ -27,6 +27,7 @@
     "node-cron": "^3.0.2",
     "node-fetch": "^3.2.10",
     "nodemailer": "^6.7.7",
+    "openai": "^6.32.0",
     "paypal-rest-sdk": "^1.8.1",
     "razorpay": "^2.8.3",
     "socket.io": "^4.6.1",

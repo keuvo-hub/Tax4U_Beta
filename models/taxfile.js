@@ -217,6 +217,32 @@ const studentTaxFileSchema = new mongoose.Schema({
         type: String,
         trim: true
     },
+    case_context: {
+        status: { type: String, default: "inactive" },
+        language: { type: String, default: null },
+        workflow_trigger: { type: String, default: null },
+        last_state_update_at: { type: Date, default: null },
+        warnings: { type: Array, default: [] },
+        next_best_action: { type: String, default: null },
+        user_summary: { type: String, default: null },
+        admin_summary: { type: String, default: null },
+        ready_for_agent: { type: Boolean, default: false },
+        assigned_preparer_id: { type: mongoose.Schema.Types.ObjectId, ref: "User", default: null },
+        assigned_preparer_name: { type: String, default: null },
+        appointment: { type: Object, default: null },
+        payment_status: { type: String, default: null },
+        document_context: {
+            checklist: { type: Array, default: [] },
+            documents_detected: { type: Array, default: [] },
+            missing_documents: { type: Array, default: [] },
+            documents_table: { type: Array, default: [] }
+        },
+        clone1_memory: {
+            last_summary: { type: String, default: null },
+            last_intent: { type: String, default: null },
+            updated_at: { type: Date, default: null }
+        }
+    },
     step3_ai: {
         enabled: {
             type: Boolean,
