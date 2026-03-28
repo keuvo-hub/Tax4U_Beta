@@ -249,7 +249,7 @@ exports.molliePaymentCheck = async (req, res, next) => {
 
             await Taxfile.updateOne(
                 { _id: findPayment?.tax_file },
-                { $set: { stripe_payment: 'paid', progress_number: 50, steps: 3 } }
+                { $set: { stripe_payment: 'paid', progress_number: 75, steps: 3 } }
             )
 
             await User.updateOne({ _id: findPayment?.user }, { $set: { steps: 3 } });
@@ -351,7 +351,7 @@ exports.razorVerification = async (req, res) => {
 
             await Taxfile.updateOne(
                 { _id: product?.taxFileId },
-                { $set: { stripe_payment: 'paid', progress_number: 50, steps: 3 } },
+                { $set: { stripe_payment: 'paid', progress_number: 75, steps: 3 } },
                 { session }
             )
 

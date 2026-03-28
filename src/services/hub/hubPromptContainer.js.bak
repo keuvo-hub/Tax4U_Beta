@@ -125,33 +125,17 @@ function getVisiblePrompt(stack = "stack0", surface = "chat0") {
     basePrompt = readPromptFile(PROMPT_FILES.stack0) || "";
   }
 
-  // 🔥 FIX AQUI
-  if (stack === "prestack") {
-    const publicContext = getStack0PublicContext();
+  if (stack === "prestack" || stack === "stack0") {
+  const publicContext = getStack0PublicContext();
 
-    return `
+  return `
 ${basePrompt}
 
 ## Public Website Context
 
 ${publicContext}
 `.trim();
-  }
-
-  if (stack === "stack0") {
-    const clone1Context =
-      surface === "chat1"
-        ? getClone1PrivateContext()
-        : getStack0PublicContext();
-
-    return `
-${basePrompt}
-
-## Clone1 Context
-
-${clone1Context}
-`.trim();
-  }
+}
 
   if (stack === "stack1" || stack === "stack2" || stack === "stack3") {
     const clone1Context =
@@ -221,3 +205,5 @@ function getClone1PrivateContext() {
 
   return `${userPortal}\n\n${sharedLegal}`.trim();
 }
+
+

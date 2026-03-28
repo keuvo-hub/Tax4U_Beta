@@ -1,13 +1,9 @@
 function resolveCaseState(taxFile = {}) {
   const ctx = taxFile.case_context || {};
-  const s3 = taxFile.step3_ai || {};
 
-  const status = ctx.status || s3.status || "inactive";
+  const status = ctx.status || null;
 
   switch (status) {
-    case "step3_triggered":
-      return "collecting_documents";
-
     case "waiting_documents":
     case "missing_documents":
       return "missing_required_documents";
@@ -25,7 +21,7 @@ function resolveCaseState(taxFile = {}) {
       return "closed";
 
     default:
-      return "collecting_documents";
+      return null;
   }
 }
 

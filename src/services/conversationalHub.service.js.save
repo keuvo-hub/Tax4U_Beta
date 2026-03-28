@@ -1,5 +1,4 @@
 const ConversationState = require("../models/conversationState");
-const { resolveCaseState } = require("../../utils/caseStateResolver");
 const OpenAI = require("openai");
 const { buildHubContext } = require("./hub/hubContextBuilder");
 const { resolveActiveStack } = require("./hub/hubStackResolver");
@@ -89,11 +88,7 @@ if (context?.authUser?.userSn) {
 
       const userSn = context?.authUser?.userSn || null;
 
-      const caseState = resolveCaseState({
-        case_context: context.activeTaxFile || {},
-      });
-
-      console.log("[HUB] caseState →", caseState);
+      nsole.log("[HUB] caseState →", caseState);
       console.log("[DEBUG AUTH FULL]", context.authUser);
       console.log("[PRIORITY CALL]", {
         trigger: context.trigger,
@@ -117,17 +112,24 @@ if (context?.authUser?.userSn) {
 
       const basePrompt = getVisiblePrompt(stack, context.surface);
 
-      const systemPrompt = `
+const systemPrompt = `
 ${basePrompt}
 
 SYSTEM PRIORITY INSTRUCTION:
 
-Current case state = ${caseState}
+Conversation stack = ${stack}
+Detected step = ${context?.derived?.detectedStep || "none"}
+Has active case = ${context?.derived?.hasActiveCase ? "yes" : "no"}
 
-You MUST:
-- be concise
-- be action-oriented
-- guide immediately
+RULES:
+- Use stack as primary source of truth
+- Use detectedStep only as support
+- Never use legacy caseState
+- Never mention collecting_documents
+- Never use step3_ai
+- Be concise
+- Be action-oriented
+- Guide immediately
 `;
 
       const history = Array.isArray(payload.history) ? payload.history : [];
@@ -166,9 +168,12 @@ const finalLanguage =
     : persistedLanguage || ctaDetectedLanguage || "en";
 
 const languageInstruction =
-  finalLanguage === "es"
+  context.history?.some((m) =>
+    typeof m.content === "string" &&
+    m.content.toLowerCase().includes("español")
+  )
     ? "The user prefers Spanish. You MUST respond ONLY in Spanish."
-    : "Respond in English.";
+    : "Respond in English unless the user clearly switches language.";
 
       const response = await client.responses.create({
         model: "gpt-4.1-mini",
