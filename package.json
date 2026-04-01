@@ -8,6 +8,7 @@
     "start": "node app.js"
   },
   "dependencies": {
+    "@aws-sdk/client-s3": "^3.967.0",
     "@mollie/api-client": "^3.6.0",
     "@sendgrid/mail": "^7.7.0",
     "aws-sdk": "^2.1194.0",
@@ -19,6 +20,7 @@
     "helmet": "^6.0.0",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.29.4",
+    "mongodb": "^5.9.2",
     "mongoose": "^6.4.5",
     "mongoose-aggregate-paginate-v2": "^1.0.6",
     "mongoose-paginate-v2": "^1.7.0",
@@ -31,6 +33,7 @@
     "paypal-rest-sdk": "^1.8.1",
     "razorpay": "^2.8.3",
     "socket.io": "^4.6.1",
+    "stream-to-buffer": "^0.1.0",
     "stripe": "^10.0.0",
     "twilio": "^3.79.0",
     "uuid": "^8.3.2",

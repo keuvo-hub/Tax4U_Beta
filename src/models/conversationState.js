@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const conversationStateSchema = new mongoose.Schema({
-  userSn: { type: Number, required: true, index: true },
+  userSn: { type: String, required: true, index: true },
   stack: { type: String, default: "stack1" },
   visibleClone: { type: String, default: "clone1" },
   activeTaxFileId: { type: String, default: null },

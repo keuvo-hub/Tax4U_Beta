@@ -147,7 +147,10 @@ try {
 
   const hasConversationState = !!conversationState;
   const hasActiveCase = !!activeTaxFile;
-  const displayName = pickDisplayName(userDoc);
+  const displayName =
+  activeTaxFile?.first_name ||
+  activeTaxFile?.case_context?.first_name ||
+  pickDisplayName(userDoc);
   const detectedStep = mapCaseStep(activeTaxFile);
 
   const isFirstTimeUser =
@@ -178,7 +181,13 @@ try {
       userSn: authUserSn,
       email: userDoc?.email || payload?.authUser?.email || null,
       username: userDoc?.username || null,
-      displayName
+      displayName:
+        activeTaxFile?.first_name ||
+        activeTaxFile?.case_context?.first_name ||
+        userDoc?.firstName ||
+        userDoc?.display_name ||
+        userDoc?.username ||
+        null
     },
     conversationState: conversationState
       ? {

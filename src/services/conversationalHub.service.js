@@ -117,8 +117,43 @@ if (context?.authUser?.userSn) {
 
       const basePrompt = getVisiblePrompt(stack, context.surface);
 
+      const liveContextBlock = `
+## Live User Context
+
+Authenticated user: ${context?.authUser?.userSn ? "YES" : "NO"}
+UserSn: ${context?.authUser?.userSn || "unknown"}
+Display name: ${context?.activeTaxFile?.firstName || context?.authUser?.displayName || "unknown"}
+
+## Live Case Context
+
+Has active tax file: ${context?.activeTaxFile ? "YES" : "NO"}
+First name: ${context?.activeTaxFile?.firstName || "unknown"}
+Last name: ${context?.activeTaxFile?.lastName || "unknown"}
+Tax year: ${context?.activeTaxFile?.taxYear || "unknown"}
+User progress is available internally. Do NOT expose raw progress or internal case status. Use it only to guide the user.
+Detected step: ${context?.activeTaxFile?.detectedStep || "unknown"}
+Next best action: ${context?.activeTaxFile?.nextBestAction || "unknown"}
+Ready for agent: ${context?.activeTaxFile?.readyForAgent ?? false}
+Payment status: ${context?.activeTaxFile?.paymentStatus || "unknown"}
+
+## Conversation State
+
+Has conversation state: ${context?.conversationState?.hasState ? "YES" : "NO"}
+Last surface: ${context?.conversationState?.lastSurface || "unknown"}
+Last message: ${context?.conversationState?.lastMessage || "unknown"}
+
+## Behavioral Instruction
+
+You MUST treat this live context as the source of truth.
+If Has active tax file = YES, you MUST NOT say the user has not started a case.
+If First name exists, use that as the user's name instead of username, displayName, or handle.
+If Progress or Detected step exists, guide the user from that real state.
+`;
+
       const systemPrompt = `
 ${basePrompt}
+
+${liveContextBlock}
 
 SYSTEM PRIORITY INSTRUCTION:
 

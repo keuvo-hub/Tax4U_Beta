@@ -216,26 +216,7 @@ exports.updateTaxfile = async (req, res, next) => {
                 session
             })
 
-await Taxfile.findByIdAndUpdate(id, {
-    $set: {
-        // ✅ NUEVO SOURCE OF TRUTH
-        "case_context.status": "step3_triggered",
-        "case_context.workflow_trigger": "save_next_step3",
-        "case_context.last_state_update_at": new Date(),
-
-        // ⚠️ LEGACY (mantener por ahora)
-        "step3_ai.enabled": true,
-        "step3_ai.trigger_source": "save_next_step3",
-        "step3_ai.status": "step3_triggered",
-        "step3_ai.last_analysis_at": new Date()
-    }
-}, {
-    validateBeforeSave: false,
-    session
-})
-
-
-if (!taxFileUpdate1 || !taxFileUpdate2) return res.status(400).json({
+            if (!taxFileUpdate1 || !taxFileUpdate2) return res.status(400).json({
                 message: 'Wrong input! try again..',
                 status: false
             });
@@ -247,6 +228,18 @@ if (!taxFileUpdate1 || !taxFileUpdate2) return res.status(400).json({
             taxFileUpdate1 = await Taxfile.findByIdAndUpdate(id, {$set: req.body}, {validateBeforeSave: false})
 
             if (!taxFileUpdate1) return res.status(400).json({message: 'Wrong input! try again..', status: false});
+
+// 🔽 CLONE2 DOCUMENT PERSIST
+if (req.body?.document_result) {
+    await Taxfile.findByIdAndUpdate(id, {
+        $push: {
+            "case_context.document_context.documents": req.body.document_result
+        },
+        $set: {
+            "case_context.document_context.lastProcessedAt": new Date()
+        }
+    });
+}
 
         }
 
