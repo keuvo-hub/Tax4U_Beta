@@ -8,8 +8,7 @@ const studentTaxFileSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
     },
-    step_one_info: [],
-    step_two_info: [],
+
     first_name: {
         type: String,
         minlength: 1,

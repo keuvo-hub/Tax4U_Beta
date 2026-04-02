@@ -29,7 +29,11 @@ exports.createTaxfile = async (req, res, next) => {
         delete req.body['other_info'];
 
         const newTaxfile = await Taxfile.create([form_other_info], {session});
-        await Taxfile.updateOne({_id: newTaxfile[0]?._id}, {$set: {step_one_info: [req.body]}}, {session});
+        await Taxfile.updateOne(
+    { _id: newTaxfile[0]?._id },
+    { $set: { ...req.body } },
+    { session }
+);
 
         if (!newTaxfile) return res.status(400).json({message: 'Wrong input! try again..', status: false});
 
@@ -211,15 +215,10 @@ exports.updateTaxfile = async (req, res, next) => {
                 session
             })
 
-            taxFileUpdate2 = await Taxfile.findByIdAndUpdate(id, {$set: {step_two_info: [req.body]}}, {
-                validateBeforeSave: false,
-                session
-            })
-
-            if (!taxFileUpdate1 || !taxFileUpdate2) return res.status(400).json({
-                message: 'Wrong input! try again..',
-                status: false
-            });
+            if (!taxFileUpdate1) return res.status(400).json({
+    message: 'Wrong input! try again..',
+    status: false
+});
 
             await session.commitTransaction();
 
@@ -762,8 +761,8 @@ exports.fetchTaxFilesData = async (req, res, next) => {
 
         const pdf = pdfData?.pdf_excel_fields || [];
         const data = {};
-        const keys = Object?.keys({...findTax, ...findTax?.step_one_info[0] || {}, ...findTax?.step_two_info[0] || {}})
-        const values = Object?.values({...findTax, ...findTax?.step_one_info[0] || {}, ...findTax?.step_two_info[0] || {}})
+        const keys = Object?.keys(findTax)
+        const values = Object?.values(findTax)
 
         for (let i = 0; i < pdf.length; i++) {
             const elemMatch = pdf[i]?.input_name;
@@ -1065,8 +1064,8 @@ exports.fetchTaxFileDetails = async (req, res, next) => {
 
             const pdf = file?.pdf_excel_data?.pdf_excel_fields || [];
             const document = {};
-            const keys = Object?.keys({...findTax, ...findTax?.step_one_info[0] || {}, ...findTax?.step_two_info[0] || {}})
-            const values = Object?.values({...findTax, ...findTax?.step_one_info[0] || {}, ...findTax?.step_two_info[0] || {}})
+            const keys = Object?.keys(findTax)
+            const values = Object?.values(findTax)
 
             for (let i = 0; i < pdf.length; i++) {
                 const elemMatch = pdf[i]?.input_name;
